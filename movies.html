@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title>all movies</title>
+	<style>
+		.head{
+			color:midnightblue;
+			text-align:center;
+			font-size:25px;
+		}
+		.allMovie{
+			
+			margin-left:500px;
+			margin-right:500px;
+			padding:40px 0px 40px 70px;
+			font-size:20px;
+			
+		}
+		input
+		{
+			padding:10px;
+			font-size:20px;
+		}
+		.button
+		{
+			padding:10px;
+			font-size:20px;
+		}
+		
+		
+	</style>
+</head>
+<body>
+	<div class="head"><p>ALL MOVIES</p></div>
+	<div><input type="text" placeholder="Enter your name" class="search"/>
+	<button class="button" onClick="searchData()">Search</button></div>
+	<div class="allMovie"></div>
+	<div class="nomovie"></div>
+</body>
+<script>
+	
+	let allMovie=document.querySelector(".allMovie");
+	
+	let data;
+	async function fetchData(url){
+		const response=await fetch(url);
+		const jsonData=await response.json();
+		return jsonData;
+	}
+	async function searchData(){
+	
+		
+		let search=document.querySelector(".search").value;
+		let response=await fetchData(` http://www.omdbapi.com/?apikey=6663c708&s=${search}`);
+		
+		console.log(response);
+		
+		data=response["Search"];
+		 
+		 
+		if(data!==0)
+		{
+			
+			for(let i=0; i<data.length;i++)
+			{
+				
+				
+				let movie=document.createElement("div");
+				
+				
+				let title=document.createElement("p");
+				title.innerHTML=data[i].Title;
+				
+				
+				
+				movie.append(title);
+				allMovie.append(movie);
+				allMovie.style.backgroundColor="aqua";
+				
+				movie.setAttribute("onClick",`showMovie(${i})`);
+				movie.setAttribute("class","movie");
+				
+				title.setAttribute("class","title");
+				
+				
+				
+				
+				
+			}
+		}
+		else
+		{
+			let nomovie=document.querySelector(".nomovie");
+			let noOne=document.createElement("div");
+			let text=document.createElement("p");
+			text.innerHTML="There is no movie";
+			noOne.append(text);
+			nomovie.append(noOne);
+			
+			
+		}
+	}
+	
+</script>
+</html>
